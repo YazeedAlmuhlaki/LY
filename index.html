@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Love U</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #ffe6e6;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #ffb6c1;
+            padding: 30px;
+            font-size: 2em;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        main {
+            padding: 20px;
+        }
+        textarea {
+            width: 80%;
+            height: 100px;
+            margin-bottom: 10px;
+            font-size: 1em;
+            border: 1px solid #ffb6c1;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ff1493;
+        }
+        #output {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #ff69b4;
+        }
+    </style>
+</head>
+<body>
+    <header>You Hold the Key to My Heart ❤️</header>
+    <main>
+        <h2>Encrypt Your Special Message</h2>
+        <textarea id="inputText" placeholder="Enter your message here..."></textarea><br>
+        <button onclick="encryptMessage()">Encrypt</button>
+
+        <h2>Decrypt Your Special Message</h2>
+        <textarea id="inputCipher" placeholder="Enter your cipher here..."></textarea><br>
+        <button onclick="decryptMessage()">Decrypt</button>
+
+        <div id="output">Your result will appear here...</div>
+    </main>
+
+    <script>
+        const secretKey = "MY_SECRET_KEY"; // Key for encryption and decryption
+
+        function utf8ToBase64(str) {
+            return btoa(unescape(encodeURIComponent(str)));
+        }
+
+        function base64ToUtf8(str) {
+            return decodeURIComponent(escape(atob(str)));
+        }
+
+        function encryptMessage() {
+            const input = document.getElementById("inputText").value;
+            const reversed = input.split('').reverse().join('');
+            const encoded = utf8ToBase64(secretKey + reversed);
+            document.getElementById("output").textContent = `Encrypted: ${encoded}`;
+        }
+
+        function decryptMessage() {
+            const input = document.getElementById("inputCipher").value;
+            try {
+                const base64Decoded = base64ToUtf8(input);
+                const keyRemoved = base64Decoded.replace(secretKey, "");
+                const decoded = keyRemoved.split('').reverse().join('');
+                document.getElementById("output").textContent = `Decrypted: ${decoded}`;
+            } catch (e) {
+                document.getElementById("output").textContent = "Invalid cipher text!";
+            }
+        }
+    </script>
+</body>
+</html>
